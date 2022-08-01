@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+<body>
+
+    <form method="post" onsubmit="return handlerSubmit(this)">
+        <select name="firstSelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>    
+        </select>
+        <select name="secondSelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>    
+        </select>
+        <select name="thirdSelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>    
+        </select>
+        <select name="fourthSelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>    
+        </select>
+        <select name="fifthSelect">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>    
+        </select>
+        <input type="text" name="firstInput">
+        <input type="text" name="secondInput">
+        <button type="submit">Отправить</button>
+    </form>
+
+    <div id="json">
+
+    </div>
+
+    <script>
+        function handlerSubmit(el) {
+            const body = new Submit(el);
+        
+            document.getElementById('json').textContent = JSON.stringify(body);
+            console.log(JSON.stringify(body));
+
+            
+            sendRequest('POST', requestURL, body)
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+
+            return false;
+        }
+
+        function Submit(el) {
+            this.firstSelect = el.firstSelect.value,
+            this.secondSelect = el.secondSelect.value,
+            this.thirdSelect = el.thirdSelect.value,
+            this.fourthSelect = el.fourthSelect.value,
+            this.fifthSelect = el.fifthSelect.value,
+            this.firstInput = el.firstInput.value,
+            this.secondInput = el.secondInput.value;
+        }
+
+        const requestURL = 'https://jsonplaceholder.typicode.com/users'
+
+        function sendRequest(method, url, body = null) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest()
+
+            xhr.open(method, url)
+
+            xhr.responseType = 'json'
+            xhr.setRequestHeader('Content-Type', 'application/json')
+
+            xhr.onload = () => {
+            if (xhr.status >= 400) {
+                reject(xhr.response)
+            } else {
+                resolve(xhr.response)
+                alert(xhr.status);
+            }
+            }
+
+            xhr.onerror = () => {
+            reject(xhr.response)
+            }
+
+            xhr.send(JSON.stringify(body))
+        })
+        }
+
+
+            </script>
+    
+</body>
+</html>
